@@ -1,13 +1,7 @@
 var firelog = require('../lib/firelog');
 
-var logger = new (firelog.Logger)({
-    transports: [
-        new (firelog.transports.Console)({appname: 'firelog', timestamp: true})
-    ]
-});
+firelog.cli('firelog', { timestamp: 'short'});
 
-logger.cli();
-
-logger.log('info', 'Hello, this is a logging event with appname', {'foo': 'bar'});
-logger.log('info', 'action', 'Hello, this is a logging event with appname', {'foo': 'bar'});
-logger.action('info', 'action', 'Hello, this is a logging event with appname', {'foo': 'bar', 'label': 'winston#*'});
+firelog.log('info', 'Hello, this is a logging event with appname', {'foo': 'bar'});
+firelog.log('info', 'action', 'Hello, this is a logging event with appname', {'foo': 'bar'});
+firelog.action('action', 'Hello, this is a logging event with appname', {'foo': 'bar', 'label': 'winston#*'});
