@@ -1,17 +1,17 @@
-# Firelog Transports
+# Wide Transports
 
-In `firelog` a transport is essentially a storage device for your logs. Each instance of a firelog logger can have multiple transports configured at different levels. For example, one may want error logs to be stored in a persistent remote location (like a database), but all logs output to the console or a local file.
+In `wide` a transport is essentially a storage device for your logs. Each instance of a wide logger can have multiple transports configured at different levels. For example, one may want error logs to be stored in a persistent remote location (like a database), but all logs output to the console or a local file.
 
-There are several [core transports](#firelog-core) included in `firelog`, which leverage the built-in networking and file I/O offered by node.js core. In addition, there are [third-party transports which are supported by the firelog core team](#firelog-more). And last (but not least) there are [additional transports written by members of the community](#additional-transports).
+There are several [core transports](#wide-core) included in `wide`, which leverage the built-in networking and file I/O offered by node.js core. In addition, there are [third-party transports which are supported by the wide core team](#wide-more). And last (but not least) there are [additional transports written by members of the community](#additional-transports).
 
-* **[Firelog Core](#firelog-core)**
+* **[Wide Core](#wide-core)**
   * [Console](#console-transport)
   * [File](#file-transport)
   * [DailyRotateFile](#dailyrotatefile-transport)
   * [Http](#http-transport)
   * [Webhook](#webhook-transport)
 
-* **[Firelog More](#firelog-more)**
+* **[Wide More](#wide-more)**
   * [CouchDB](#couchdb-transport)
   * [Loggly](#loggly-transport)
   * [MongoDB](#mongodb-transport)
@@ -24,9 +24,9 @@ There are several [core transports](#firelog-core) included in `firelog`, which 
   * [Amazon SNS](#amazon-sns-simple-notification-system-transport)
   * [Graylog2](#graylog2-transport)
 
-## Firelog Core
+## Wide Core
 
-There are several core transports included in `firelog`, which leverage the built-in networking and file I/O offered by node.js core.
+There are several core transports included in `wide`, which leverage the built-in networking and file I/O offered by node.js core.
 
 * [Console](#console-transport)
 * [File](#file-transport)
@@ -37,7 +37,7 @@ There are several core transports included in `firelog`, which leverage the buil
 ### Console Transport
 
 ``` js
-  firelog.add(firelog.transports.Console, options)
+  wide.add(wide.transports.Console, options)
 ```
 
 The Console transport takes four simple options:
@@ -52,7 +52,7 @@ The Console transport takes four simple options:
 ### File Transport
 
 ``` js
-  firelog.add(firelog.transports.File, options)
+  wide.add(wide.transports.File, options)
 ```
 
 The File transport should really be the 'Stream' transport since it will accept any [WritableStream][0]. It is named such because it will also accept filenames via the 'filename' option:
@@ -72,7 +72,7 @@ The File transport should really be the 'Stream' transport since it will accept 
 ### DailyRotateFile Transport
 
 ``` js
-  firelog.add(firelog.transports.DailyRotateFile, options)
+  wide.add(wide.transports.DailyRotateFile, options)
 ```
 
 The DailyRotateFile transport can rotate files by minute, hour, day, month or year. Its options are identical to the File transport with the lone addition of the 'datePattern' option:
@@ -97,7 +97,7 @@ Valid meta characters in the datePattern are:
 ### Http Transport
 
 ``` js
-  firelog.add(firelog.transports.Http, options)
+  wide.add(wide.transports.Http, options)
 ```
 
 The `Http` transport is a generic way to log, query, and stream logs from an arbitrary Http endpoint, preferably [winstond][1]. It takes options that are passed to the node.js `http` or `https` request:
@@ -108,9 +108,9 @@ The `Http` transport is a generic way to log, query, and stream logs from an arb
 * __auth:__ (Default: **None**) An object representing the `username` and `password` for HTTP Basic Auth
 * __ssl:__ (Default: **false**) Value indicating if we should us HTTPS
 
-## Firelog More
+## Wide More
 
-Starting with `firelog@0.3.0` an effort was made to remove any transport which added additional dependencies to `firelog`. At the time there were several transports already in `firelog` which will **always be supported by the firelog core team.**
+Starting with `wide@0.3.0` an effort was made to remove any transport which added additional dependencies to `wide`. At the time there were several transports already in `wide` which will **always be supported by the wide core team.**
 
 * [CouchDB](#couchdb-transport)
 * [Redis](#redis-transport)
@@ -120,24 +120,24 @@ Starting with `firelog@0.3.0` an effort was made to remove any transport which a
 
 ### CouchDB Transport
 
-_As of `firelog@0.6.0` the CouchDB transport has been broken out into a new module: [firelog-couchdb][2]._
+_As of `wide@0.6.0` the CouchDB transport has been broken out into a new module: [wide-couchdb][2]._
 
 ``` js
-  firelog.add(firelog.transports.Couchdb, options)
+  wide.add(wide.transports.Couchdb, options)
 ```
 
 The `Couchdb` will place your logs in a remote CouchDB database. It will also create a [Design Document][3], `_design/Logs` for later querying and streaming your logs from CouchDB. The transport takes the following options:
 
 * __host:__ (Default: **localhost**) Remote host of the HTTP logging endpoint
 * __port:__ (Default: **5984**) Remote port of the HTTP logging endpoint
-* __db:__ (Default: **firelog**) Remote URI of the HTTP logging endpoint
+* __db:__ (Default: **wide**) Remote URI of the HTTP logging endpoint
 * __auth:__ (Default: **None**) An object representing the `username` and `password` for HTTP Basic Auth
 * __ssl:__ (Default: **false**) Value indicating if we should us HTTPS
 
 ### Redis Transport
 
 ``` js
-  firelog.add(firelog.transports.Redis, options)
+  wide.add(wide.transports.Redis, options)
 ```
 
 This transport accepts the options accepted by the [node-redis][4] client:
@@ -149,17 +149,17 @@ This transport accepts the options accepted by the [node-redis][4] client:
 In addition to these, the Redis transport also accepts the following options.
 
 * __length:__ (Default **200**) Number of log messages to store.
-* __container:__ (Default **firelog**) Name of the Redis container you wish your logs to be in.
+* __container:__ (Default **wide**) Name of the Redis container you wish your logs to be in.
 * __channel:__ (Default **None**) Name of the Redis channel to stream logs from. 
 
 *Metadata:* Logged as JSON literal in Redis
 
 ### Loggly Transport
 
-_As of `firelog@0.6.0` the Loggly transport has been broken out into a new module: [firelog-loggly][5]._
+_As of `wide@0.6.0` the Loggly transport has been broken out into a new module: [wide-loggly][5]._
 
 ``` js
-  firelog.add(firelog.transports.Loggly, options);
+  wide.add(wide.transports.Loggly, options);
 ```
 
 The Loggly transport is based on [Nodejitsu's][6] [node-loggly][7] implementation of the [Loggly][8] API. If you haven't heard of Loggly before, you should probably read their [value proposition][9]. The Loggly transport takes the following options. Either 'inputToken' or 'inputName' is required:
@@ -175,11 +175,11 @@ The Loggly transport is based on [Nodejitsu's][6] [node-loggly][7] implementatio
 
 ### Riak Transport
 
-_As of `firelog@0.3.0` the Riak transport has been broken out into a new module: [firelog-riak][11]._ Using it is just as easy:
+_As of `wide@0.3.0` the Riak transport has been broken out into a new module: [wide-riak][11]._ Using it is just as easy:
 
 ``` js
-  var Riak = require('firelog-riak').Riak;
-  firelog.add(Riak, options);
+  var Riak = require('wide-riak').Riak;
+  wide.add(Riak, options);
 ```
 
 In addition to the options accepted by the [riak-js][12] [client][13], the Riak transport also accepts the following options. It is worth noting that the riak-js debug option is set to *false* by default:
@@ -204,11 +204,11 @@ In addition to the options accepted by the [riak-js][12] [client][13], the Riak 
 
 ### MongoDB Transport
 
-As of `firelog@0.3.0` the MongoDB transport has been broken out into a new module: [firelog-mongodb][14]. Using it is just as easy:
+As of `wide@0.3.0` the MongoDB transport has been broken out into a new module: [wide-mongodb][14]. Using it is just as easy:
 
 ``` js
-  var MongoDB = require('firelog-mongodb').MongoDB;
-  firelog.add(MongoDB, options);
+  var MongoDB = require('wide-mongodb').MongoDB;
+  wide.add(MongoDB, options);
 ```
 
 The MongoDB transport takes the following options. 'db' is required:
@@ -225,21 +225,21 @@ The MongoDB transport takes the following options. 'db' is required:
 
 ## Additional Transports
 
-The community has truly embraced `firelog`; there are over **23** firelog transports and over half of them are maintained by authors external to the firelog core team. If you want to check them all out, just search `npm`:
+The community has truly embraced `wide`; there are over **23** wide transports and over half of them are maintained by authors external to the wide core team. If you want to check them all out, just search `npm`:
 
 ``` bash
-  $ npm search firelog
+  $ npm search wide
 ```
 
 **If you have an issue using one of these modules you should contact the module author directly**
 
 ### SimpleDB Transport
 
-The [firelog-simpledb][15] transport is just as easy:
+The [wide-simpledb][15] transport is just as easy:
 
 ``` js
-  var SimpleDB = require('firelog-simpledb').SimpleDB;
-  firelog.add(SimpleDB, options);
+  var SimpleDB = require('wide-simpledb').SimpleDB;
+  wide.add(SimpleDB, options);
 ```
 
 The SimpleDB transport takes the following options. All items marked with an asterisk are required:
@@ -255,17 +255,17 @@ The SimpleDB transport takes the following options. All items marked with an ast
 
 ### Mail Transport
 
-The [firelog-mail][16] is an email transport:
+The [wide-mail][16] is an email transport:
 
 ``` js
-  var Mail = require('firelog-mail').Mail;
-  firelog.add(Mail, options);
+  var Mail = require('wide-mail').Mail;
+  wide.add(Mail, options);
 ```
 
 The Mail transport uses [node-mail][17] behind the scenes.  Options are the following, `to` and `host` are required:
 
 * __to:__ The address(es) you want to send to. *[required]*
-* __from:__ The address you want to send from. (default: `firelog@[server-host-name]`)
+* __from:__ The address you want to send from. (default: `wide@[server-host-name]`)
 * __host:__ SMTP server hostname
 * __port:__ SMTP port (default: 587 or 25)
 * __secure:__ Use secure
@@ -278,11 +278,11 @@ The Mail transport uses [node-mail][17] behind the scenes.  Options are the foll
 
 ### Amazon SNS (Simple Notification System) Transport
 
-The [firelog-sns][18] transport uses amazon SNS to send emails, texts, or a bunch of other notifications.
+The [wide-sns][18] transport uses amazon SNS to send emails, texts, or a bunch of other notifications.
 
 ``` js
-  require('firelog-sns').SNS;
-  firelog.add(firelog.transports.SNS, options);
+  require('wide-sns').SNS;
+  wide.add(wide.transports.SNS, options);
 ```
 
 Options:
@@ -292,17 +292,17 @@ Options:
 * __subscriber:__ Subscriber number - found in your SNS AWS Console, after clicking on a topic. Same as AWS Account ID. *[required]*
 * __topic_arn:__ Also found in SNS AWS Console - listed under a topic as Topic ARN. *[required]*
 * __region:__ AWS Region to use. Can be one of: `us-east-1`,`us-west-1`,`eu-west-1`,`ap-southeast-1`,`ap-northeast-1`,`us-gov-west-1`,`sa-east-1`. (default: `us-east-1`)
-* __subject:__ Subject for notifications. (default: "Firelog Error Report")
+* __subject:__ Subject for notifications. (default: "Wide Error Report")
 * __message:__ Message of notifications. Uses placeholders for level (%l), error message (%e), and metadata (%m). (default: "Level '%l' Error:\n%e\n\nMetadata:\n%m")
 * __level:__ lowest level this transport will log. (default: `info`)
 
 ### Graylog2 Transport
 
-[firelog-graylog2][19] is a Graylog2 transport:
+[wide-graylog2][19] is a Graylog2 transport:
 
 ``` js
-  var Graylog2 = require('firelog-graylog2').Graylog2;
-  firelog.add(Graylog2, options);
+  var Graylog2 = require('wide-graylog2').Graylog2;
+  wide.add(Graylog2, options);
 ```
 
 The Graylog2 transport connects to a Graylog2 server over UDP using the following options:
@@ -319,11 +319,11 @@ The Graylog2 transport connects to a Graylog2 server over UDP using the followin
 
 ### Cassandra Transport
 
-[firelog-cassandra][20] is a Cassandra transport:
+[wide-cassandra][20] is a Cassandra transport:
 
 ``` js
-  var Cassandra = require('firelog-cassandra').Cassandra;
-  firelog.add(Cassandra, options);
+  var Cassandra = require('wide-cassandra').Cassandra;
+  wide.add(Cassandra, options);
 ```
 
 The Cassandra transport connects to a cluster using the native protocol with the following options:
@@ -343,54 +343,54 @@ Array of strings containing the hosts, for example `['host1', 'host2']` (require
 ## Find more Transports
 
 ``` bash
-  $ npm search firelog
+  $ npm search wide
   (...)
-  firelog-amon         Firelog transport for Amon logging                            =zoramite
-  firelog-amqp         An AMQP transport for firelog                                 =kr1sp1n
-  firelog-cassandra    A Cassandra transport for firelog                             =jorgebay
-  firelog-couchdb      a couchdb transport for firelog                               =alz
-  firelog-express      Express middleware to let you use firelog from the browser.   =regality
-  firelog-graylog2     A graylog2 transport for firelog                              =smithclay
-  firelog-hbase        A HBase transport for firelog                                 =ddude
-  firelog-loggly       A Loggly transport for firelog                                =taoyuan
-  firelog-mail         A mail transport for firelog                                  =wavded
-  firelog-mail2        A mail transport for firelog                                  =ivolo
-  firelog-mongodb      A MongoDB transport for firelog                               =taoyuan
-  firelog-nodemail     A mail transport for firelog                                  =reinpk
-  firelog-nssocket     nssocket transport for firelog                                =mmalecki
-  firelog-papertrail   A Papertrail transport for firelog                            =kenperkins
-  firelog-redis        A fixed-length Redis transport for firelog                    =taoyuan
-  firelog-riak         A Riak transport for firelog                                  =taoyuan
-  firelog-scribe       A scribe transport for firelog                                =wnoronha
-  firelog-simpledb     A Firelog transport for Amazon SimpleDB                       =chilts
-  firelog-skywriter    A Windows Azure table storage transport for firelog           =pofallon
-  firelog-sns          A Simple Notification System Transport for firelog            =jesseditson
-  firelog-syslog       A syslog transport for firelog                                =taoyuan
-  firelog-syslog-ain2  An ain2 based syslog transport for firelog                    =lamtha
-  firelog-winlog       Windows Event Log logger for Firelog                          =jfromaniello
-  firelog-zmq          A 0MQ transport for firelog                                   =dhendo
-  firelog-growl        A growl transport for firelog                                 =pgherveou
+  wide-amon         Wide transport for Amon logging                            =zoramite
+  wide-amqp         An AMQP transport for wide                                 =kr1sp1n
+  wide-cassandra    A Cassandra transport for wide                             =jorgebay
+  wide-couchdb      a couchdb transport for wide                               =alz
+  wide-express      Express middleware to let you use wide from the browser.   =regality
+  wide-graylog2     A graylog2 transport for wide                              =smithclay
+  wide-hbase        A HBase transport for wide                                 =ddude
+  wide-loggly       A Loggly transport for wide                                =taoyuan
+  wide-mail         A mail transport for wide                                  =wavded
+  wide-mail2        A mail transport for wide                                  =ivolo
+  wide-mongodb      A MongoDB transport for wide                               =taoyuan
+  wide-nodemail     A mail transport for wide                                  =reinpk
+  wide-nssocket     nssocket transport for wide                                =mmalecki
+  wide-papertrail   A Papertrail transport for wide                            =kenperkins
+  wide-redis        A fixed-length Redis transport for wide                    =taoyuan
+  wide-riak         A Riak transport for wide                                  =taoyuan
+  wide-scribe       A scribe transport for wide                                =wnoronha
+  wide-simpledb     A Wide transport for Amazon SimpleDB                       =chilts
+  wide-skywriter    A Windows Azure table storage transport for wide           =pofallon
+  wide-sns          A Simple Notification System Transport for wide            =jesseditson
+  wide-syslog       A syslog transport for wide                                =taoyuan
+  wide-syslog-ain2  An ain2 based syslog transport for wide                    =lamtha
+  wide-winlog       Windows Event Log logger for Wide                          =jfromaniello
+  wide-zmq          A 0MQ transport for wide                                   =dhendo
+  wide-growl        A growl transport for wide                                 =pgherveou
 
 ```
 
 [0]: http://nodejs.org/docs/v0.3.5/api/streams.html#writable_Stream
 [1]: https://github.com/taoyuan/winstond
-[2]: https://github.com/taoyuan/firelog-couchdb
+[2]: https://github.com/taoyuan/wide-couchdb
 [3]: http://guide.couchdb.org/draft/design.html
 [4]: https://github.com/mranney/node_redis
-[5]: https://github.com/taoyuan/firelog-loggly
+[5]: https://github.com/taoyuan/wide-loggly
 [6]: http://nodejitsu.com
 [7]: https://github.com/nodejitsu/node-loggly
 [8]: http://loggly.com
 [9]: http://www.loggly.com/product/
 [10]: http://wiki.loggly.com/loggingfromcode
-[11]: https://github.com/taoyuan/firelog-riak
+[11]: https://github.com/taoyuan/wide-riak
 [12]: http://riakjs.org
 [13]: https://github.com/frank06/riak-js/blob/master/src/http_client.coffee#L10
-[14]: http://github.com/taoyuan/firelog-mongodb
-[15]: http://github.com/appsattic/firelog-simpledb
-[16]: http://github.com/wavded/firelog-mail
+[14]: http://github.com/taoyuan/wide-mongodb
+[15]: http://github.com/appsattic/wide-simpledb
+[16]: http://github.com/wavded/wide-mail
 [17]: https://github.com/weaver/node-mail
-[18]: https://github.com/jesseditson/firelog-sns
-[19]: https://github.com/flite/firelog-graylog2
-[20]: https://github.com/jorgebay/firelog-cassandra
+[18]: https://github.com/jesseditson/wide-sns
+[19]: https://github.com/flite/wide-graylog2
+[20]: https://github.com/jorgebay/wide-cassandra

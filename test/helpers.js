@@ -3,7 +3,7 @@ var assert = require('chai').assert,
     path = require('path'),
     spawn = require('child_process').spawn,
     util = require('util'),
-    firelog = require('../lib/firelog');
+    wide = require('../lib/wide');
 
 var helpers = exports;
 
@@ -77,7 +77,7 @@ helpers.assertTrace = function (trace) {
 };
 
 helpers.assertLogger = function (logger, level) {
-    assert.instanceOf(logger, firelog.Logger);
+    assert.instanceOf(logger, wide.Logger);
     assert.isFunction(logger.log);
     assert.isFunction(logger.add);
     assert.isFunction(logger.remove);
@@ -88,32 +88,32 @@ helpers.assertLogger = function (logger, level) {
 };
 
 helpers.assertConsole = function (transport) {
-    assert.instanceOf(transport, firelog.transports.Console);
+    assert.instanceOf(transport, wide.transports.Console);
     assert.isFunction(transport.log);
 };
 
 helpers.assertMemory = function (transport) {
-    assert.instanceOf(transport, firelog.transports.Memory);
+    assert.instanceOf(transport, wide.transports.Memory);
     assert.isFunction(transport.log);
 };
 
 helpers.assertFile = function (transport) {
-    assert.instanceOf(transport, firelog.transports.File);
+    assert.instanceOf(transport, wide.transports.File);
     assert.isFunction(transport.log);
 };
 
 helpers.assertDailyRotateFile = function (transport) {
-    assert.instanceOf(transport, firelog.transports.DailyRotateFile);
+    assert.instanceOf(transport, wide.transports.DailyRotateFile);
     assert.isFunction(transport.log);
 };
 
 helpers.assertWebhook = function (transport) {
-    assert.instanceOf(transport, firelog.transports.Webhook);
+    assert.instanceOf(transport, wide.transports.Webhook);
     assert.isFunction(transport.log);
 };
 
 helpers.assertCouchdb = function (transport) {
-    assert.instanceOf(transport, firelog.transports.Couchdb);
+    assert.instanceOf(transport, wide.transports.Couchdb);
     assert.isFunction(transport.log);
 };
 
@@ -145,11 +145,11 @@ helpers.assertHandleExceptions = function (options) {
 };
 
 helpers.testNpmLevels = function (transport, assertMsg, assertFn) {
-    return helpers.testLevels(firelog.config.npm.levels, transport, assertMsg, assertFn);
+    return helpers.testLevels(wide.config.npm.levels, transport, assertMsg, assertFn);
 };
 
 helpers.testSyslogLevels = function (transport, assertMsg, assertFn) {
-    return helpers.testLevels(firelog.config.syslog.levels, transport, assertMsg, assertFn);
+    return helpers.testLevels(wide.config.syslog.levels, transport, assertMsg, assertFn);
 };
 
 helpers.testLevels = function (levels, transport, assertMsg, assertFn) {

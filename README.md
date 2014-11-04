@@ -1,40 +1,40 @@
-# firelog [![Build Status](https://secure.travis-ci.org/taoyuan/firelog.png?branch=master)](http://travis-ci.org/taoyuan/firelog)
+# wide [![Build Status](https://secure.travis-ci.org/taoyuan/wide.png?branch=master)](http://travis-ci.org/taoyuan/wide)
 
 A multi-transport async logging library for node.js. Forked from [winston](https://github.com/flatiron/winston)
 
 ## Motivation
-Firelog is designed to be a simple and universal logging library with support for multiple transports. A transport is essentially a storage device for your logs. Each instance of a firelog logger can have multiple transports configured at different levels. For example, one may want error logs to be stored in a persistent remote location (like a database), but all logs output to the console or a local file.
+Wide is designed to be a simple and universal logging library with support for multiple transports. A transport is essentially a storage device for your logs. Each instance of a wide logger can have multiple transports configured at different levels. For example, one may want error logs to be stored in a persistent remote location (like a database), but all logs output to the console or a local file.
 
 There also seemed to be a lot of logging libraries out there that coupled their implementation of logging (i.e. how the logs are stored / indexed) to the API that they exposed to the programmer. This library aims to decouple those parts of the process to make it more flexible and extensible.
 
 ## Installation
 
 ```bash
-npm install firelog
+npm install wide
 ```
 
 ## Usage
-There are two different ways to use firelog: directly via the default logger, or by instantiating your own Logger. The former is merely intended to be a convenient shared logger to use throughout your application if you so choose.
+There are two different ways to use wide: directly via the default logger, or by instantiating your own Logger. The former is merely intended to be a convenient shared logger to use throughout your application if you so choose.
 
 * [Logging](#logging)
   * [Using the Default Logger](#using-the-default-logger)
   * [Instantiating your own Logger](#instantiating-your-own-logger)
   * [Logging with Metadata](#logging-with-metadata)
   * [String interpolation ](#string-interpolation)
-* [Transports](https://github.com/taoyuan/firelog/blob/master/docs/transports.md)
+* [Transports](https://github.com/taoyuan/wide/blob/master/docs/transports.md)
 * [Profiling](#profiling)
 * [Streaming Logs](#streaming-logs)
 * [Querying Logs](#querying-logs)
 * [Exceptions](#exceptions)
-  * [Handling Uncaught Exceptions with firelog](#handling-uncaught-exceptions-with-firelog)
+  * [Handling Uncaught Exceptions with wide](#handling-uncaught-exceptions-with-wide)
   * [To Exit or Not to Exit](#to-exit-or-not-to-exit)
 * [Logging Levels](#logging-levels)
   * [Using Logging Levels](#using-logging-levels)
   * [Using Custom Logging Levels](#using-custom-logging-levels)
 * [Further Reading](#further-reading)
-  * [Events and Callbacks in Firelog](#events-and-callbacks-in-firelog)
-  * [Working with multiple Loggers in firelog](#working-with-multiple-loggers-in-firelog)
-  * [Using firelog in a CLI tool](#using-firelog-in-a-cli-tool)
+  * [Events and Callbacks in Wide](#events-and-callbacks-in-wide)
+  * [Working with multiple Loggers in wide](#working-with-multiple-loggers-in-wide)
+  * [Using wide in a CLI tool](#using-wide-in-a-cli-tool)
   * [Extending another object with Logging](#extending-another-object-with-logging)
 * [Working with transports](#working-with-transports)
 	* [Adding Custom Transports](#adding-custom-transports)
@@ -45,32 +45,32 @@ There are two different ways to use firelog: directly via the default logger, or
 ## Logging
 
 ### Using the Default Logger
-The default logger is accessible through the firelog module directly. Any method that you could call on an instance of a logger is available on the default logger:
+The default logger is accessible through the wide module directly. Any method that you could call on an instance of a logger is available on the default logger:
 
 ``` js
-  var firelog = require('firelog');
+  var wide = require('wide');
 
-  firelog.log('info', 'Hello distributed log files!');
-  firelog.info('Hello again distributed logs');
+  wide.log('info', 'Hello distributed log files!');
+  wide.info('Hello again distributed logs');
 ```
 
 By default, only the Console transport is set on the default logger. You can add or remove transports via the add() and remove() methods:
 
 ``` js
-  firelog.add(firelog.transports.File, { filename: 'somefile.log' });
-  firelog.remove(firelog.transports.Console);
+  wide.add(wide.transports.File, { filename: 'somefile.log' });
+  wide.remove(wide.transports.Console);
 ```
 
-For more documentation about working with each individual transport supported by Firelog see the [Working with transports](#working-with-transports) section below.
+For more documentation about working with each individual transport supported by Wide see the [Working with transports](#working-with-transports) section below.
 
 ### Instantiating your own Logger
 If you would prefer to manage the object lifetime of loggers you are free to instantiate them yourself:
 
 ``` js
-  var logger = new (firelog.Logger)({
+  var logger = new (wide.Logger)({
     transports: [
-      new (firelog.transports.Console)(),
-      new (firelog.transports.File)({ filename: 'somefile.log' })
+      new (wide.transports.Console)(),
+      new (wide.transports.File)({ filename: 'somefile.log' })
     ]
   });
 ```
@@ -88,15 +88,15 @@ You can work with this logger in the same way that you work with the default log
   // Adding / Removing Transports
   //   (Yes It's chainable)
   //
-  logger.add(firelog.transports.File)
-        .remove(firelog.transports.Console);
+  logger.add(wide.transports.File)
+        .remove(wide.transports.Console);
 ```
 
 ### Logging with Metadata
-In addition to logging string messages, firelog will also optionally log additional JSON metadata objects. Adding metadata is simple:
+In addition to logging string messages, wide will also optionally log additional JSON metadata objects. Adding metadata is simple:
 
 ``` js
-  firelog.log('info', 'Test Log Message', { anything: 'This is metadata' });
+  wide.log('info', 'Test Log Message', { anything: 'This is metadata' });
 ```
 
 The way these objects are stored varies from transport to transport (to best support the storage mechanisms offered). Here's a quick summary of how each transports handles metadata:
@@ -105,21 +105,21 @@ The way these objects are stored varies from transport to transport (to best sup
 2. __File:__ Logged via util.inspect(meta)
 
 ## Profiling
-In addition to logging messages and metadata, firelog also has a simple profiling mechanism implemented for any logger:
+In addition to logging messages and metadata, wide also has a simple profiling mechanism implemented for any logger:
 
 ``` js
   //
   // Start profile of 'test'
   // Remark: Consider using Date.now() with async operations
   //
-  firelog.profile('test');
+  wide.profile('test');
 
   setTimeout(function () {
     //
     // Stop profile of 'test'. Logging will now take place:
     //   "17 Jan 21:00:00 - info: test duration=1000ms"
     //
-    firelog.profile('test');
+    wide.profile('test');
   }, 1000);
 ```
 
@@ -164,7 +164,7 @@ logger.log('info', 'test message', 'first', 'second', {number: 123}, function(){
 
 
 ## Querying Logs
-Firelog supports querying of logs with Loggly-like options. [See Loggly Search API](http://wiki.loggly.com/retrieve_events#optional).
+Wide supports querying of logs with Loggly-like options. [See Loggly Search API](http://wiki.loggly.com/retrieve_events#optional).
 Specifically: `File`, `Couchdb`, `Redis`, `Loggly`, `Nssocket`, and `Http`.
 
 ``` js
@@ -180,7 +180,7 @@ Specifically: `File`, `Couchdb`, `Redis`, `Loggly`, `Nssocket`, and `Http`.
   //
   // Find items logged between today and yesterday.
   //
-  firelog.query(options, function (err, results) {
+  wide.query(options, function (err, results) {
     if (err) {
       throw err;
     }
@@ -196,16 +196,16 @@ Streaming allows you to stream your logs back from your chosen transport.
   //
   // Start at the end.
   //
-  firelog.stream({ start: -1 }).on('log', function(log) {
+  wide.stream({ start: -1 }).on('log', function(log) {
     console.log(log);
   });
 ```
 
 ## Exceptions
 
-### Handling Uncaught Exceptions with firelog
+### Handling Uncaught Exceptions with wide
 
-With `firelog`, it is possible to catch and log `uncaughtException` events from your process. There are two distinct ways of enabling this functionality either through the default firelog logger or your own logger instance.
+With `wide`, it is possible to catch and log `uncaughtException` events from your process. There are two distinct ways of enabling this functionality either through the default wide logger or your own logger instance.
 
 If you want to use this feature with the default logger simply call `.handleExceptions()` with a transport instance.
 
@@ -213,12 +213,12 @@ If you want to use this feature with the default logger simply call `.handleExce
   //
   // You can add a separate exception logger by passing it to `.handleExceptions`
   //
-  firelog.handleExceptions(new firelog.transports.File({ filename: 'path/to/exceptions.log' }))
+  wide.handleExceptions(new wide.transports.File({ filename: 'path/to/exceptions.log' }))
 
   //
-  // Alternatively you can set `.handleExceptions` to true when adding transports to firelog
+  // Alternatively you can set `.handleExceptions` to true when adding transports to wide
   //
-  firelog.add(firelog.transports.File, {
+  wide.add(wide.transports.File, {
     filename: 'path/to/all-logs.log',
     handleExceptions: true
   });
@@ -226,11 +226,11 @@ If you want to use this feature with the default logger simply call `.handleExce
 
 ### To Exit or Not to Exit
 
-By default, firelog will exit after logging an uncaughtException. if this is not the behavior you want,
+By default, wide will exit after logging an uncaughtException. if this is not the behavior you want,
 set `exitOnError = false`
 
 ``` js
-  var logger = new (firelog.Logger)({ exitOnError: false });
+  var logger = new (wide.Logger)({ exitOnError: false });
 
   //
   // or, like this:
@@ -243,12 +243,12 @@ When working with custom logger instances, you can pass in separate transports t
 Example 1
 
 ``` js
-  var logger = new (firelog.Logger)({
+  var logger = new (wide.Logger)({
     transports: [
-      new firelog.transports.File({ filename: 'path/to/all-logs.log' })
+      new wide.transports.File({ filename: 'path/to/all-logs.log' })
     ],
     exceptionHandlers: [
-      new firelog.transports.File({ filename: 'path/to/exceptions.log' })
+      new wide.transports.File({ filename: 'path/to/exceptions.log' })
     ]
   });
 ```
@@ -256,9 +256,9 @@ Example 1
 Example 2
 
 ```
-var logger = new firelog.Logger({
+var logger = new wide.Logger({
   transports: [
-    new firelog.transports.Console({
+    new wide.transports.Console({
       handleExceptions: true,
       json: true
     })
@@ -274,7 +274,7 @@ The `exitOnError` option can also be a function to prevent exit on only certain 
     return err.code !== 'EPIPE';
   }
 
-  var logger = new (firelog.Logger)({ exitOnError: ignoreEpipe });
+  var logger = new (wide.Logger)({ exitOnError: ignoreEpipe });
 
   //
   // or, like this:
@@ -285,7 +285,7 @@ The `exitOnError` option can also be a function to prevent exit on only certain 
 ## Logging Levels
 
 ### Using Logging Levels
-Setting the level for your logging message can be accomplished in one of two ways. You can pass a string representing the logging level to the log() method or use the level specified methods defined on every firelog Logger.
+Setting the level for your logging message can be accomplished in one of two ways. You can pass a string representing the logging level to the log() method or use the level specified methods defined on every wide Logger.
 
 ``` js
   //
@@ -304,17 +304,17 @@ Setting the level for your logging message can be accomplished in one of two way
   //
   // Default logger
   //
-  firelog.log('info', "127.0.0.1 - there's no place like home");
-  firelog.info("127.0.0.1 - there's no place like home");
+  wide.log('info', "127.0.0.1 - there's no place like home");
+  wide.info("127.0.0.1 - there's no place like home");
 ```
 
-Firelog allows you to set a `level` on each transport that specifies the level of messages this transport should log. For example, you could log only errors to the console, with the full logs in a file (note that the default level of a transport is `info`):
+Wide allows you to set a `level` on each transport that specifies the level of messages this transport should log. For example, you could log only errors to the console, with the full logs in a file (note that the default level of a transport is `info`):
 
 ``` js
-  var logger = new (firelog.Logger)({
+  var logger = new (wide.Logger)({
     transports: [
-      new (firelog.transports.Console)({ level: 'error' }),
-      new (firelog.transports.File)({ filename: 'somefile.log' })
+      new (wide.transports.Console)({ level: 'error' }),
+      new (wide.transports.File)({ filename: 'somefile.log' })
     ]
   });
 ```
@@ -322,10 +322,10 @@ Firelog allows you to set a `level` on each transport that specifies the level o
 You may also dynamically change the log level of a transport:
 
 ``` js
-  var logger = new (firelog.Logger)({
+  var logger = new (wide.Logger)({
     transports: [
-      new (firelog.transports.Console)({ level: 'warn' }),
-      new (firelog.transports.File)({ filename: 'somefile.log', level: 'error' })
+      new (wide.transports.Console)({ level: 'warn' }),
+      new (wide.transports.File)({ filename: 'somefile.log', level: 'error' })
     ]
   });
   logger.debug("Will not be logged in either transport!");
@@ -334,18 +334,18 @@ You may also dynamically change the log level of a transport:
   logger.verbose("Will be logged in both transports!");
 ```
 
-As of 0.2.0, firelog supports customizable logging levels, defaulting to [npm][0] style logging levels. Changing logging levels is easy:
+As of 0.2.0, wide supports customizable logging levels, defaulting to [npm][0] style logging levels. Changing logging levels is easy:
 
 ``` js
   //
-  // Change levels on the default firelog logger
+  // Change levels on the default wide logger
   //
-  firelog.setLevels(firelog.config.syslog.levels);
+  wide.setLevels(wide.config.syslog.levels);
 
   //
   // Change levels on an instance of a logger
   //
-  logger.setLevels(firelog.config.syslog.levels);
+  logger.setLevels(wide.config.syslog.levels);
 ```
 
 Calling `.setLevels` on a logger will remove all of the previous helper methods for the old levels and define helper methods for the new levels. Thus, you should be careful about the logging statements you use when changing levels. For example, if you ran this code after changing to the syslog levels:
@@ -358,7 +358,7 @@ Calling `.setLevels` on a logger will remove all of the previous helper methods 
 ```
 
 ### Using Custom Logging Levels
-In addition to the predefined `npm` and `syslog` levels available in Firelog, you can also choose to define your own:
+In addition to the predefined `npm` and `syslog` levels available in Wide, you can also choose to define your own:
 
 ``` js
   var myCustomLevels = {
@@ -376,25 +376,25 @@ In addition to the predefined `npm` and `syslog` levels available in Firelog, yo
     }
   };
 
-  var customLevelLogger = new (firelog.Logger)({ levels: myCustomLevels.levels });
+  var customLevelLogger = new (wide.Logger)({ levels: myCustomLevels.levels });
   customLevelLogger.foobar('some foobar level-ed message');
 ```
 
-Although there is slight repetition in this data structure, it enables simple encapsulation if you not to have colors. If you do wish to have colors, in addition to passing the levels to the Logger itself, you must make firelog aware of them:
+Although there is slight repetition in this data structure, it enables simple encapsulation if you not to have colors. If you do wish to have colors, in addition to passing the levels to the Logger itself, you must make wide aware of them:
 
 ``` js
   //
-  // Make firelog aware of these colors
+  // Make wide aware of these colors
   //
-  firelog.addColors(myCustomLevels.colors);
+  wide.addColors(myCustomLevels.colors);
 ```
 
 This enables transports with the 'colorize' option set to appropriately color the output of custom levels.
 
 ## Further Reading
 
-### Events and Callbacks in Firelog
-Each instance of firelog.Logger is also an instance of an [EventEmitter][1]. A log event will be raised each time a transport successfully logs a message:
+### Events and Callbacks in Wide
+Each instance of wide.Logger is also an instance of an [EventEmitter][1]. A log event will be raised each time a transport successfully logs a message:
 
 ``` js
   logger.on('logging', function (transport, level, msg, meta) {
@@ -426,17 +426,17 @@ Every logging method described in the previous section also takes an optional ca
   });
 ```
 
-### Working with multiple Loggers in firelog
+### Working with multiple Loggers in wide
 
-Often in larger, more complex applications it is necessary to have multiple logger instances with different settings. Each logger is responsible for a different feature area (or category). This is exposed in `firelog` in two ways: through `firelog.loggers` and instances of `firelog.Container`. In fact, `firelog.loggers` is just a predefined instance of `firelog.Container`:
+Often in larger, more complex applications it is necessary to have multiple logger instances with different settings. Each logger is responsible for a different feature area (or category). This is exposed in `wide` in two ways: through `wide.loggers` and instances of `wide.Container`. In fact, `wide.loggers` is just a predefined instance of `wide.Container`:
 
 ``` js
-  var firelog = require('firelog');
+  var wide = require('wide');
 
   //
   // Configure the logger for `category1`
   //
-  firelog.loggers.add('category1', {
+  wide.loggers.add('category1', {
     console: {
       level: 'silly',
       colorize: 'true',
@@ -450,7 +450,7 @@ Often in larger, more complex applications it is necessary to have multiple logg
   //
   // Configure the logger for `category2`
   //
-  firelog.loggers.add('category2', {
+  wide.loggers.add('category2', {
     couchdb: {
       host: '127.0.0.1',
       port: 5984
@@ -458,15 +458,15 @@ Often in larger, more complex applications it is necessary to have multiple logg
   });
 ```
 
-Now that your loggers are setup you can require firelog _in any file in your application_ and access these pre-configured loggers:
+Now that your loggers are setup you can require wide _in any file in your application_ and access these pre-configured loggers:
 
 ``` js
-  var firelog = require('firelog');
+  var wide = require('wide');
 
   //
   // Grab your preconfigured logger
   //
-  var category1 = firelog.loggers.get('category1');
+  var category1 = wide.loggers.get('category1');
 
   category1.info('logging from your IoC container-based logger');
 ```
@@ -474,8 +474,8 @@ Now that your loggers are setup you can require firelog _in any file in your app
 If you prefer to manage the `Container` yourself you can simply instantiate one:
 
 ``` js
-  var firelog = require('firelog'),
-      container = new firelog.Container();
+  var wide = require('wide'),
+      container = new wide.Container();
 
   container.add('category1', {
     console: {
@@ -488,31 +488,31 @@ If you prefer to manage the `Container` yourself you can simply instantiate one:
   });
 ```
 
-### Sharing transports between Loggers in firelog
+### Sharing transports between Loggers in wide
 
 ``` js
-  var firelog = require('firelog');
+  var wide = require('wide');
 
   //
   // Setup transports to be shared across all loggers
   // in three ways:
   //
   // 1. By setting it on the default Container
-  // 2. By passing `transports` into the constructor function of firelog.Container
+  // 2. By passing `transports` into the constructor function of wide.Container
   // 3. By passing `transports` into the `.get()` or `.add()` methods
   //
 
   //
   // 1. By setting it on the default Container
   //
-  firelog.loggers.options.transports = [
+  wide.loggers.options.transports = [
     // Setup your shared transports here
   ];
 
   //
-  // 2. By passing `transports` into the constructor function of firelog.Container
+  // 2. By passing `transports` into the constructor function of wide.Container
   //
-  var container = new firelog.Container({
+  var container = new wide.Container({
     transports: [
       // Setup your shared transports here
     ]
@@ -521,7 +521,7 @@ If you prefer to manage the `Container` yourself you can simply instantiate one:
   //
   // 3. By passing `transports` into the `.get()` or `.add()` methods
   //
-  firelog.loggers.add('some-category', {
+  wide.loggers.add('some-category', {
     transports: [
       // Setup your shared transports here
     ]
@@ -534,8 +534,8 @@ If you prefer to manage the `Container` yourself you can simply instantiate one:
   });
 ```
 
-### Using firelog in a CLI tool
-A common use-case for logging is output to a CLI tool. Firelog has a special helper method which will pretty print output from your CLI tool. Here's an example from the [require-analyzer][2] written by [Nodejitsu][3]:
+### Using wide in a CLI tool
+A common use-case for logging is output to a CLI tool. Wide has a special helper method which will pretty print output from your CLI tool. Here's an example from the [require-analyzer][2] written by [Nodejitsu][3]:
 
 ```
   info:   require-analyzer starting in /Users/Charlie/Nodejitsu/require-analyzer
@@ -547,7 +547,7 @@ A common use-case for logging is output to a CLI tool. Firelog has a special hel
   data:     npm: '1.0.x',
   data:     optimist: '0.2.x',
   data:     semver: '1.0.x',
-  data:     firelog: '0.2.x'
+  data:     wide: '0.2.x'
   data:   }
   info:   Analyzing dependencies...
   info:   Done analyzing raw dependencies
@@ -555,22 +555,22 @@ A common use-case for logging is output to a CLI tool. Firelog has a special hel
   warn:   No additional dependencies found
 ```
 
-Configuring output for this style is easy, just use the `.cli()` method on `firelog` or an instance of `firelog.Logger`:
+Configuring output for this style is easy, just use the `.cli()` method on `wide` or an instance of `wide.Logger`:
 
 ``` js
-  var firelog = require('firelog');
+  var wide = require('wide');
 
   //
   // Configure CLI output on the default logger
   //
-  firelog.cli();
+  wide.cli();
 
   //
-  // Configure CLI on an instance of firelog.Logger
+  // Configure CLI on an instance of wide.Logger
   //
-  var logger = new firelog.Logger({
+  var logger = new wide.Logger({
     transports: [
-      new (firelog.transports.Console)()
+      new (wide.transports.Console)()
     ]
   });
 
@@ -578,7 +578,7 @@ Configuring output for this style is easy, just use the `.cli()` method on `fire
 ```
 
 ### Extending another object with Logging
-Often in a given code base with lots of Loggers it is useful to add logging methods to a different object so that these methods can be called with less syntax. Firelog exposes this functionality via the 'extend' method:
+Often in a given code base with lots of Loggers it is useful to add logging methods to a different object so that these methods can be called with less syntax. Wide exposes this functionality via the 'extend' method:
 
 ``` js
   var myObject = {};
@@ -592,12 +592,12 @@ Often in a given code base with lots of Loggers it is useful to add logging meth
 ```
 
 ## Working with Transports
-There are many transports supported by firelog core. If you have a transport you would like to add either open an issue or fork and submit a pull request. Commits are welcome, but I'll give you extra street cred if you __add tests too :D__
+There are many transports supported by wide core. If you have a transport you would like to add either open an issue or fork and submit a pull request. Commits are welcome, but I'll give you extra street cred if you __add tests too :D__
 
 
 ### Console Transport
 ``` js
-  firelog.add(firelog.transports.Console, options)
+  wide.add(wide.transports.Console, options)
 ```
 
 The Console transport takes a few simple options:
@@ -611,7 +611,7 @@ The Console transport takes a few simple options:
 
 ### File Transport
 ``` js
-  firelog.add(firelog.transports.File, options)
+  wide.add(wide.transports.File, options)
 ```
 
 The File transport should really be the 'Stream' transport since it will accept any [WritableStream][14]. It is named such because it will also accept filenames via the 'filename' option:
@@ -631,8 +631,8 @@ The File transport should really be the 'Stream' transport since it will accept 
 
 ### Loggly Transport
 ``` js
-  var Loggly = require('firelog-loggly').Loggly
-  firelog.add(Loggly, options);
+  var Loggly = require('wide-loggly').Loggly
+  wide.add(Loggly, options);
 ```
 
 The Loggly transport is based on [Nodejitsu's][3] [node-loggly][6] implementation of the [Loggly][7] API. If you haven't heard of Loggly before, you should probably read their [value proposition][8]. The Loggly transport takes the following options. Either 'inputToken' or 'inputName' is required:
@@ -647,11 +647,11 @@ The Loggly transport is based on [Nodejitsu's][3] [node-loggly][6] implementatio
 *Metadata:* Logged in suggested [Loggly format][2]
 
 ### Riak Transport
-As of `0.3.0` the Riak transport has been broken out into a new module: [firelog-riak][17]. Using it is just as easy:
+As of `0.3.0` the Riak transport has been broken out into a new module: [wide-riak][17]. Using it is just as easy:
 
 ``` js
-  var Riak = require('firelog-riak').Riak;
-  firelog.add(Riak, options);
+  var Riak = require('wide-riak').Riak;
+  wide.add(Riak, options);
 ```
 
 In addition to the options accepted by the [riak-js][3] [client][4], the Riak transport also accepts the following options. It is worth noting that the riak-js debug option is set to *false* by default:
@@ -675,22 +675,22 @@ In addition to the options accepted by the [riak-js][3] [client][4], the Riak tr
 *Metadata:* Logged as JSON literal in Riak
 
 ### MongoDB Transport
-As of `0.3.0` the MongoDB transport has been broken out into a new module: [firelog-mongodb][16]. Using it is just as easy:
+As of `0.3.0` the MongoDB transport has been broken out into a new module: [wide-mongodb][16]. Using it is just as easy:
 
 ``` js
-  var MongoDB = require('firelog-mongodb').MongoDB;
-  firelog.add(MongoDB, options);
+  var MongoDB = require('wide-mongodb').MongoDB;
+  wide.add(MongoDB, options);
 ```
 
-For more information about its arguments, check [firelog-mongodb's README][16].
+For more information about its arguments, check [wide-mongodb's README][16].
 
 ### SimpleDB Transport
 
-The [firelog-simpledb][18] transport is just as easy:
+The [wide-simpledb][18] transport is just as easy:
 
 ``` js
-  var SimpleDB = require('firelog-simpledb').SimpleDB;
-  firelog.add(SimpleDB, options);
+  var SimpleDB = require('wide-simpledb').SimpleDB;
+  wide.add(SimpleDB, options);
 ```
 
 The SimpleDB transport takes the following options. All items marked with an asterisk are required:
@@ -706,17 +706,17 @@ The SimpleDB transport takes the following options. All items marked with an ast
 
 ### Mail Transport
 
-The [firelog-mail][19] is an email transport:
+The [wide-mail][19] is an email transport:
 
 ``` js
-  var Mail = require('firelog-mail').Mail;
-  firelog.add(Mail, options);
+  var Mail = require('wide-mail').Mail;
+  wide.add(Mail, options);
 ```
 
 The Mail transport uses [emailjs](https://github.com/eleith/emailjs) behind the scenes.  Options are the following:
 
 * __to:__ The address(es) you want to send to. *[required]*
-* __from:__ The address you want to send from. (default: `firelog@[server-host-name]`)
+* __from:__ The address you want to send from. (default: `wide@[server-host-name]`)
 * __host:__ SMTP server hostname (default: localhost)
 * __port:__ SMTP port (default: 587 or 25)
 * __username__ User for server auth
@@ -730,11 +730,11 @@ The Mail transport uses [emailjs](https://github.com/eleith/emailjs) behind the 
 
 ### Amazon SNS (Simple Notification System) Transport
 
-The [firelog-sns][21] transport uses amazon SNS to send emails, texts, or a bunch of other notifications.
+The [wide-sns][21] transport uses amazon SNS to send emails, texts, or a bunch of other notifications.
 
 ``` js
-  require('firelog-sns').SNS;
-  firelog.add(firelog.transports.SNS, options);
+  require('wide-sns').SNS;
+  wide.add(wide.transports.SNS, options);
 ```
 
 Options:
@@ -744,17 +744,17 @@ Options:
 * __subscriber:__ Subscriber number - found in your SNS AWS Console, after clicking on a topic. Same as AWS Account ID. *[required]*
 * __topic_arn:__ Also found in SNS AWS Console - listed under a topic as Topic ARN. *[required]*
 * __region:__ AWS Region to use. Can be one of: `us-east-1`,`us-west-1`,`eu-west-1`,`ap-southeast-1`,`ap-northeast-1`,`us-gov-west-1`,`sa-east-1`. (default: `us-east-1`)
-* __subject:__ Subject for notifications. (default: "Firelog Error Report")
+* __subject:__ Subject for notifications. (default: "Wide Error Report")
 * __message:__ Message of notifications. Uses placeholders for level (%l), error message (%e), and metadata (%m). (default: "Level '%l' Error:\n%e\n\nMetadata:\n%m")
 * __level:__ lowest level this transport will log. (default: `info`)
 
 ### Graylog2 Transport
 
-[firelog-graylog2][22] is a Graylog2 transport:
+[wide-graylog2][22] is a Graylog2 transport:
 
 ``` js
-  var Graylog2 = require('firelog-graylog2').Graylog2;
-  firelog.add(Graylog2, options);
+  var Graylog2 = require('wide-graylog2').Graylog2;
+  wide.add(Graylog2, options);
 ```
 
 The Graylog2 transport connects to a Graylog2 server over UDP using the following options:
@@ -771,11 +771,11 @@ The Graylog2 transport connects to a Graylog2 server over UDP using the followin
 
 ### Papertrail Transport
 
-[firelog-papertrail][23] is a Papertrail transport:
+[wide-papertrail][23] is a Papertrail transport:
 
 ``` js
-  var Papertrail = require('firelog-papertrail').Papertrail;
-  firelog.add(Papertrail, options);
+  var Papertrail = require('wide-papertrail').Papertrail;
+  wide.add(Papertrail, options);
 ```
 
 The Papertrail transport connects to a [PapertrailApp log destination](https://papertrailapp.com) over TCP (TLS) using the following options:
@@ -791,11 +791,11 @@ The Papertrail transport connects to a [PapertrailApp log destination](https://p
 
 ### Cassandra Transport
 
-[firelog-cassandra][24] is a Cassandra transport:
+[wide-cassandra][24] is a Cassandra transport:
 
 ``` js
-  var Cassandra = require('firelog-cassandra').Cassandra;
-  firelog.add(Cassandra, options);
+  var Cassandra = require('wide-cassandra').Cassandra;
+  wide.add(Cassandra, options);
 ```
 
 The Cassandra transport connects to a cluster using the native protocol with the following options:
@@ -812,13 +812,13 @@ Array of strings containing the hosts, for example `['host1', 'host2']` (require
 * __keyspace:__ The name of the keyspace that will contain the logs table (required). The keyspace should be already created in the cluster.
 
 ### Adding Custom Transports
-Adding a custom transport (say for one of the datastore on the Roadmap) is actually pretty easy. All you need to do is accept a couple of options, set a name, implement a log() method, and add it to the set of transports exposed by firelog.
+Adding a custom transport (say for one of the datastore on the Roadmap) is actually pretty easy. All you need to do is accept a couple of options, set a name, implement a log() method, and add it to the set of transports exposed by wide.
 
 ``` js
   var util = require('util'),
-      firelog = require('firelog');
+      wide = require('wide');
 
-  var CustomLogger = firelog.transports.CustomerLogger = function (options) {
+  var CustomLogger = wide.transports.CustomerLogger = function (options) {
     //
     // Name this logger
     //
@@ -835,10 +835,10 @@ Adding a custom transport (say for one of the datastore on the Roadmap) is actua
   };
 
   //
-  // Inherit from `firelog.Transport` so you can take advantage
+  // Inherit from `wide.Transport` so you can take advantage
   // of the base functionality and `.handleExceptions()`.
   //
-  util.inherits(CustomLogger, firelog.Transport);
+  util.inherits(CustomLogger, wide.Transport);
 
   CustomLogger.prototype.log = function (level, msg, meta, callback) {
     //
@@ -864,13 +864,13 @@ Adding a custom transport (say for one of the datastore on the Roadmap) is actua
   curl http://npmjs.org/install.sh | sh
 ```
 
-### Installing firelog
+### Installing wide
 ```
-  [sudo] npm install firelog
+  [sudo] npm install wide
 ```
 
 ## Run Tests
-All of the firelog tests are written in [vows][9], and designed to be run with npm.
+All of the wide tests are written in [vows][9], and designed to be run with npm.
 
 ``` bash
   $ npm test

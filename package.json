@@ -1,14 +1,14 @@
 {
-  "name": "firelog",
+  "name": "wide",
   "description": "A multi-transport async logging library for Node.js",
-  "version": "0.8.1",
+  "version": "0.1.0",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "maintainers": [
     "taoyuan <erictaoy@gmail.com>"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/taoyuan/firelog.git"
+    "url": "https://github.com/taoyuan/wide.git"
   },
   "keywords": [
     "logging",
@@ -28,7 +28,7 @@
     "chai": "^1.9.2",
     "mocha": "^2.0.1"
   },
-  "main": "./lib/firelog",
+  "main": "./lib/wide",
   "scripts": {
     "test": "mocha"
   },
@@ -38,7 +38,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://raw.github.com/taoyuan/firelog/master/LICENSE"
+      "url": "https://raw.github.com/taoyuan/wide/master/LICENSE"
     }
   ]
 }

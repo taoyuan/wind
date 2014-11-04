@@ -1,5 +1,5 @@
 /*
- * log-string-exceptions.js: A test fixture for logging string exceptions in firelog.
+ * log-string-exceptions.js: A test fixture for logging string exceptions in wide.
  *
  * (C) 2011 Charlie Robbins
  * MIT LICENCE
@@ -7,11 +7,11 @@
  */
 
 var path = require('path'),
-    firelog = require('../../../lib/firelog');
+    wide = require('../../../lib/wide');
 
-var logger = new (firelog.Logger)({
+var logger = new (wide.Logger)({
   transports: [
-    new (firelog.transports.File)({
+    new (wide.transports.File)({
       filename: path.join(__dirname, '..', 'logs', 'string-exception.log'),
       handleExceptions: true
     })

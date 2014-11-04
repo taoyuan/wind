@@ -1,11 +1,11 @@
 /*
- * custom-levels.js: Custom logger and color levels in firelog
+ * custom-levels.js: Custom logger and color levels in wide
  *
  * (C) 2012, Nodejitsu Inc.
  *
  */
 
-var firelog = require('../lib/firelog');
+var wide = require('../lib/wide');
 
 //
 // Logging levels
@@ -31,9 +31,9 @@ var config = {
   }
 };
 
-var logger = module.exports = new (firelog.Logger)({
+var logger = module.exports = new (wide.Logger)({
   transports: [
-    new (firelog.transports.Console)({
+    new (wide.transports.Console)({
       colorize: true
     })
   ],

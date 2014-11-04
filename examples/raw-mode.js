@@ -1,8 +1,8 @@
-var firelog = require('../lib/firelog');
+var wide = require('../lib/wide');
 
-var logger = new (firelog.Logger)({
+var logger = new (wide.Logger)({
     transports: [
-        new (firelog.transports.Console)({raw: true})
+        new (wide.transports.Console)({raw: true})
     ]
 });
 
