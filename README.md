@@ -440,7 +440,7 @@ Often in larger, more complex applications it is necessary to have multiple logg
     console: {
       level: 'silly',
       colorize: 'true',
-      label: 'category one'
+      category: 'category one'
     },
     file: {
       filename: '/path/to/some/file'
