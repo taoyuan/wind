@@ -1,0 +1,43 @@
+{
+  "name": "firelog",
+  "description": "A multi-transport async logging library for Node.js",
+  "version": "0.8.1",
+  "author": "Nodejitsu Inc. <info@nodejitsu.com>",
+  "maintainers": [
+    "taoyuan <erictaoy@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taoyuan/firelog.git"
+  },
+  "keywords": [
+    "logging",
+    "sysadmin",
+    "tools"
+  ],
+  "dependencies": {
+    "async": "0.2.x",
+    "colors": "0.6.x",
+    "cycle": "1.0.x",
+    "eyes": "0.1.x",
+    "pkginfo": "0.3.x",
+    "stack-trace": "0.0.x"
+  },
+  "devDependencies": {
+    "chai": "^1.9.2",
+    "mocha": "^2.0.1"
+  },
+  "main": "./lib/firelog",
+  "scripts": {
+    "test": "mocha"
+  },
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://raw.github.com/taoyuan/firelog/master/LICENSE"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+test/*.log
+test/fixtures/*.json
+npm-debug.log
+test/fixtures/logs/*.log*
+node_modules
+.idea
