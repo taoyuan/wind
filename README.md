@@ -101,8 +101,8 @@ In addition to logging string messages, wide will also optionally log additional
 
 The way these objects are stored varies from transport to transport (to best support the storage mechanisms offered). Here's a quick summary of how each transports handles metadata:
 
-1. __Console:__ Logged via util.inspect(meta)
-2. __File:__ Logged via util.inspect(meta)
+1. __Console:__ Logged via util.inspect(data)
+2. __File:__ Logged via util.inspect(data)
 
 ## Profiling
 In addition to logging messages and metadata, wide also has a simple profiling mechanism implemented for any logger:
@@ -138,24 +138,24 @@ logger.log('info', 'test message %d', 123);
 
 logger.log('info', 'test message %j', {number: 123}, {});
 // info: test message {"number":123}
-// meta = {}
+// data = {}
 
 logger.log('info', 'test message %s, %s', 'first', 'second', {number: 123});
 // info: test message first, second
-// meta = {number: 123}
+// data = {number: 123}
 
 logger.log('info', 'test message', 'first', 'second', {number: 123});
 // info: test message first second
-// meta = {number: 123}
+// data = {number: 123}
 
 logger.log('info', 'test message %s, %s', 'first', 'second', {number: 123}, function(){});
 // info: test message first, second
-// meta = {numer: 123}
+// data = {numer: 123}
 // callback = function(){}
 
 logger.log('info', 'test message', 'first', 'second', {number: 123}, function(){});
 // info: test message first second
-// meta = {numer: 123}
+// data = {numer: 123}
 // callback = function(){}
 ```
 
@@ -397,8 +397,8 @@ This enables transports with the 'colorize' option set to appropriately color th
 Each instance of wide.Logger is also an instance of an [EventEmitter][1]. A log event will be raised each time a transport successfully logs a message:
 
 ``` js
-  logger.on('logging', function (transport, level, msg, meta) {
-    // [msg] and [meta] have now been logged at [level] to [transport]
+  logger.on('logging', function (transport, level, msg, data) {
+    // [msg] and [data] have now been logged at [level] to [transport]
   });
 
   logger.info('CHILL WINSTON!', { seriously: true });
@@ -421,8 +421,8 @@ It is also worth mentioning that the logger also emits an 'error' event which yo
 Every logging method described in the previous section also takes an optional callback which will be called only when all of the transports have logged the specified message.
 
 ``` js
-  logger.info('CHILL WINSTON!', { seriously: true }, function (err, level, msg, meta) {
-    // [msg] and [meta] have now been logged at [level] to **every** transport.
+  logger.info('CHILL WINSTON!', { seriously: true }, function (err, level, msg, data) {
+    // [msg] and [data] have now been logged at [level] to **every** transport.
   });
 ```
 
@@ -607,7 +607,7 @@ The Console transport takes a few simple options:
 * __colorize:__ Boolean flag indicating if we should colorize output (default false).
 * __timestamp:__ Boolean flag indicating if we should prepend output with timestamps (default false). If function is specified, its return value will be used instead of timestamps.
 
-*Metadata:* Logged via util.inspect(meta);
+*Metadata:* Logged via util.inspect(data);
 
 ### File Transport
 ``` js
@@ -627,7 +627,7 @@ The File transport should really be the 'Stream' transport since it will accept 
 * __json:__ If true, messages will be logged as JSON (default true).
 * __logstash:__ If true, messages will be logged as JSON and formatted for logstash (default false).
 
-*Metadata:* Logged via util.inspect(meta);
+*Metadata:* Logged via util.inspect(data);
 
 ### Loggly Transport
 ``` js
@@ -665,7 +665,7 @@ In addition to the options accepted by the [riak-js][3] [client][4], the Riak tr
 
   // Generate a dynamic bucket based on the date and level
   var dynamicBucketTransport = new (Riak)({
-    bucket: function (level, msg, meta, now) {
+    bucket: function (level, msg, data, now) {
       var d = new Date(now);
       return level + [d.getDate(), d.getMonth(), d.getFullYear()].join('-');
     }
@@ -702,7 +702,7 @@ The SimpleDB transport takes the following options. All items marked with an ast
 * __region__:* the region your domain resides in
 * __itemName__: a string ('uuid', 'epoch', 'timestamp') or function that returns the item name to log
 
-*Metadata:* Logged as a native JSON object to the 'meta' attribute of the item.
+*Metadata:* Logged as a native JSON object to the 'data' attribute of the item.
 
 ### Mail Transport
 
@@ -787,7 +787,7 @@ The Papertrail transport connects to a [PapertrailApp log destination](https://p
 * __program:__ The facility to send log messages.. (default: default)
 * __logFormat:__ a log formatting function with the signature `function(level, message)`, which allows custom formatting of the level or message prior to delivery
 
-*Metadata:* Logged as a native JSON object to the 'meta' attribute of the item.
+*Metadata:* Logged as a native JSON object to the 'data' attribute of the item.
 
 ### Cassandra Transport
 
@@ -840,7 +840,7 @@ Adding a custom transport (say for one of the datastore on the Roadmap) is actua
   //
   util.inherits(CustomLogger, wide.Transport);
 
-  CustomLogger.prototype.log = function (level, msg, meta, callback) {
+  CustomLogger.prototype.log = function (level, msg, data, callback) {
     //
     // Store this message and metadata, maybe use some custom logic
     // then callback indicating success.

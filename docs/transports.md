@@ -47,7 +47,7 @@ The Console transport takes four simple options:
 * __colorize:__ Boolean flag indicating if we should colorize output (default false).
 * __timestamp:__ Boolean flag indicating if we should prepend output with timestamps (default false). If function is specified, its return value will be used instead of timestamps.
 
-*Metadata:* Logged via util.inspect(meta);
+*Metadata:* Logged via util.inspect(data);
 
 ### File Transport
 
@@ -67,7 +67,7 @@ The File transport should really be the 'Stream' transport since it will accept 
 * __stream:__ The WriteableStream to write output to.
 * __json:__ If true, messages will be logged as JSON (default true).
 
-*Metadata:* Logged via util.inspect(meta);
+*Metadata:* Logged via util.inspect(data);
 
 ### DailyRotateFile Transport
 
@@ -77,9 +77,9 @@ The File transport should really be the 'Stream' transport since it will accept 
 
 The DailyRotateFile transport can rotate files by minute, hour, day, month or year. Its options are identical to the File transport with the lone addition of the 'datePattern' option:
 
-* __datePattern:__ A string representing the pattern to be used when appending the date to the filename (default '.yyyy-MM-dd'). The meta characters used in this string will dictate the frequency of the file rotation. For example if your datePattern is simply '.HH' you will end up with 24 log files that are picked up and appended to every day.
+* __datePattern:__ A string representing the pattern to be used when appending the date to the filename (default '.yyyy-MM-dd'). The data characters used in this string will dictate the frequency of the file rotation. For example if your datePattern is simply '.HH' you will end up with 24 log files that are picked up and appended to every day.
 
-Valid meta characters in the datePattern are:
+Valid data characters in the datePattern are:
 
 * __yy:__ Last two digits of the year.
 * __yyyy:__ Full year.
@@ -92,7 +92,7 @@ Valid meta characters in the datePattern are:
 * __m:__ The minute.
 * __mm:__ The zero padded minute.
 
-*Metadata:* Logged via util.inspect(meta);
+*Metadata:* Logged via util.inspect(data);
 
 ### Http Transport
 
@@ -193,7 +193,7 @@ In addition to the options accepted by the [riak-js][12] [client][13], the Riak 
 
   // Generate a dynamic bucket based on the date and level
   var dynamicBucketTransport = new (Riak)({
-    bucket: function (level, msg, meta, now) {
+    bucket: function (level, msg, data, now) {
       var d = new Date(now);
       return level + [d.getDate(), d.getMonth(), d.getFullYear()].join('-');
     }
@@ -251,7 +251,7 @@ The SimpleDB transport takes the following options. All items marked with an ast
 * __region__:* the region your domain resides in
 * __itemName__: a string ('uuid', 'epoch', 'timestamp') or function that returns the item name to log
 
-*Metadata:* Logged as a native JSON object to the 'meta' attribute of the item.
+*Metadata:* Logged as a native JSON object to the 'data' attribute of the item.
 
 ### Mail Transport
 
