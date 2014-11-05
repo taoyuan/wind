@@ -55,29 +55,32 @@ describe('logger', function () {
             next();
         });
 
-        //it('should call the interceptors along the chain', function (next) {
-        //    var called = [];
-        //    var childLogger = logger.geminate();
-        //
-        //    childLogger.intercept(function () {
-        //        called.push(1);
-        //    });
-        //    logger.intercept(function () {
-        //        called.push(3);
-        //    });
-        //
-        //    childLogger.on('log', function () {
-        //        called.push(2);
-        //    });
-        //    logger.on('log', function () {
-        //        called.push(4);
-        //    });
-        //
-        //    childLogger.log('warn', 'foo', 'bar');
-        //
-        //    assert.deepEqual(called, [1, 2, 3, 4]);
-        //    next();
-        //});
+        it('should call the interceptors along the chain', function (next) {
+            var called = [];
+
+            logger.intercept(function () {
+                called.push(1);
+            });
+
+            var childLogger = logger.child();
+
+            childLogger.intercept(function () {
+                called.push(2);
+            });
+
+            childLogger.on('logged', function () {
+                called.push(3);
+            });
+
+            logger.on('logged', function () {
+                called.push(4);
+            });
+
+            childLogger.log('warn', 'foo', 'bar');
+
+            assert.deepEqual(called, [1, 2, 3, 4]);
+            next();
+        });
     });
 
 });

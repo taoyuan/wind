@@ -19,6 +19,7 @@
     "async": "0.2.x",
     "colors": "0.6.x",
     "cycle": "1.0.x",
+    "eventemitter2": "^0.4.14",
     "eyes": "0.1.x",
     "pad": "0.0.5",
     "pkginfo": "0.3.x",
