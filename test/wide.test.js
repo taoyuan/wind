@@ -6,12 +6,12 @@ var fs = require('fs'),
     helpers = require('./helpers');
 
 describe('wide', function () {
-    wide.default.transports.console.colorize = true;
+    wide.transports.console.colorize = true;
 
     it('should have the correct methods defined', function () {
-        wide.default.transports.console.level = 'silly';
+        wide.transports.console.level = 'silly';
         assert.isFunction(wide.Transport);
-        assert.isObject(wide.default.transports.console);
+        assert.isObject(wide.transports.console);
         assert.isFalse(wide.emitErrs);
         assert.isObject(wide.config);
         ['Logger', 'add', 'remove', 'extend', 'clear']
@@ -50,7 +50,7 @@ describe('wide', function () {
     describe('#setLevels()', function () {
         it('should have the proper methods defined', function () {
             wide.setLevels(wide.config.syslog.levels);
-            assert.isObject(wide.default.transports.console);
+            assert.isObject(wide.transports.console);
             assert.isFalse(wide.emitErrs);
             assert.isObject(wide.config);
 
