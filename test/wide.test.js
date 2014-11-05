@@ -10,12 +10,7 @@ describe('wide', function () {
 
     it('should have the correct methods defined', function () {
         wide.default.transports.console.level = 'silly';
-        assert.isObject(wide.transports);
         assert.isFunction(wide.Transport);
-        assert.isTrue(!wide.transports.Transport);
-        assert.isFunction(wide.transports.Console);
-        assert.isFunction(wide.transports.File);
-        assert.isFunction(wide.transports.Webhook);
         assert.isObject(wide.default.transports.console);
         assert.isFalse(wide.emitErrs);
         assert.isObject(wide.config);
@@ -55,9 +50,6 @@ describe('wide', function () {
     describe('#setLevels()', function () {
         it('should have the proper methods defined', function () {
             wide.setLevels(wide.config.syslog.levels);
-            assert.isObject(wide.transports);
-            assert.isFunction(wide.transports.Console);
-            assert.isFunction(wide.transports.Webhook);
             assert.isObject(wide.default.transports.console);
             assert.isFalse(wide.emitErrs);
             assert.isObject(wide.config);
