@@ -7,7 +7,7 @@
  */
 
 var path = require('path'),
-    wide = require('../../../lib/wide');
+    wide = require('../../../lib');
 
 var logger = new (wide.Logger)({
   transports: [

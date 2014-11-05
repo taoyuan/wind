@@ -2,7 +2,7 @@ var fs = require('fs'),
     path = require('path'),
     http = require('http'),
     assert = require('chai').assert,
-    wide = require('../lib/wide'),
+    wide = require('..'),
     helpers = require('./helpers');
 
 describe('wide', function () {

@@ -1,5 +1,5 @@
 var t = require('chai').assert;
-var wide = require('../lib/wide');
+var wide = require('..');
 
 function CapturingTransport(name, options) {
     if (typeof name === 'object') {

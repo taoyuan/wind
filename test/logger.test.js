@@ -1,20 +1,21 @@
 var assert = require('chai').assert;
-var Logger = require('../lib/wide/logger').Logger;
+var Logger = require('../lib/logger').Logger;
+var transports = require('../lib/transports');
 
 describe('logger', function () {
 
-    var logger;
-
-    beforeEach(function () {
-        logger = new Logger({
-            emitErrs: true
-        });
-        logger.on('error', function (err) {
-            throw err;
-        })
-    });
-
     describe('.intercept', function () {
+        var logger;
+
+        beforeEach(function () {
+            logger = new Logger({
+                emitErrs: true
+            });
+            logger.on('error', function (err) {
+                throw err;
+            })
+        });
+
         it('should add the function and call it when a log occurs', function (next) {
             var called;
             var data = {
@@ -80,6 +81,45 @@ describe('logger', function () {
 
             assert.deepEqual(called, [1, 2, 3, 4]);
             next();
+        });
+    });
+
+    describe('transports', function () {
+
+        it('should add transports with array config', function () {
+            var logger = new Logger({
+                transports: [
+                    {type: 'console'},
+                    {type: 'webhook', 'host': 'localhost', 'port': 8080, 'path': '/collectdata'}
+                ]
+            });
+            assert.lengthOf(Object.keys(logger.transports), 2);
+            assert.instanceOf(logger.transports.console, transports.Console);
+            assert.instanceOf(logger.transports.webhook, transports.Webhook);
+        });
+
+        it('should add transports with array transport instances', function () {
+            var logger = new Logger({
+                transports: [
+                    new transports.Console(),
+                    new transports.Webhook({'host': 'localhost', 'port': 8080, 'path': '/collectdata'})
+                ]
+            });
+            assert.lengthOf(Object.keys(logger.transports), 2);
+            assert.instanceOf(logger.transports.console, transports.Console);
+            assert.instanceOf(logger.transports.webhook, transports.Webhook);
+        });
+
+        it('should add transports with object config', function () {
+            var logger = new Logger({
+                transports: {
+                    console: {},
+                    webhook: {host: 'localhost', 'port': 8080, 'path': ' / collectdata'}
+                }
+            });
+            assert.lengthOf(Object.keys(logger.transports), 2);
+            assert.instanceOf(logger.transports.console, transports.Console);
+            assert.instanceOf(logger.transports.webhook, transports.Webhook);
         });
     });
 

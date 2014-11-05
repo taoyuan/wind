@@ -7,7 +7,7 @@
  */
  
 var path = require('path'),
-    wide = require('../../../lib/wide');
+    wide = require('../../../lib');
 
 wide.handleExceptions([
   new (wide.transports.File)({

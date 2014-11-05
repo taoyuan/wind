@@ -7,7 +7,7 @@
  */
  
 var path = require('path'),
-    wide = require('../../../lib/wide');
+    wide = require('../../../lib');
 
 wide.exitOnError = function (err) {
   return err.message !== 'Ignore this error';

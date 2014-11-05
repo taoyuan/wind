@@ -1,8 +1,8 @@
-var wide = require('../lib/wide');
+var wide = require('..');
 
 var logger = new (wide.Logger)({
     transports: [
-        new (wide.transports.Console)({raw: true})
+        {type: 'console', raw: true}
     ]
 });
 

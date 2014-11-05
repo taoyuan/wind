@@ -1,4 +1,5 @@
-var wide = require('../lib/wide');
+var wide = require('..');
+var transports = require('../transports');
 
 //
 // Create a new wide logger instance with two tranports: Console, and Couchdb
@@ -9,9 +10,9 @@ var wide = require('../lib/wide');
 //
 var logger = new (wide.Logger)({
   transports: [
-    new (wide.transports.Console)(),
-    new (wide.transports.Couchdb)({ 'host': 'localhost', 'db': 'logs' })
-    // if you need auth do this: new (wide.transports.Couchdb)({ 'user': 'admin', 'pass': 'admin', 'host': 'localhost', 'db': 'logs' })
+    {type: 'console'},
+    {type: 'couchdb', 'host': 'localhost', 'db': 'logs' }
+    // if you need auth do this: new (transports.Couchdb)({ 'user': 'admin', 'pass': 'admin', 'host': 'localhost', 'db': 'logs' })
   ]
 });
 

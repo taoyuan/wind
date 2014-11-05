@@ -3,7 +3,7 @@ var assert = require('chai').assert,
     path = require('path'),
     spawn = require('child_process').spawn,
     util = require('util'),
-    wide = require('../lib/wide');
+    wide = require('..');
 
 var helpers = exports;
 

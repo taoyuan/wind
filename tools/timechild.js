@@ -14,7 +14,7 @@
  */
 
 var ben = require('ben');  // npm install ben
-var Logger = require('../lib/wide').Logger;
+var Logger = require('../lib').Logger;
 
 var log = new Logger({
     transports: [

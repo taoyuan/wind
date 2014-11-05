@@ -30,7 +30,7 @@
     "chai": "^1.9.2",
     "mocha": "^2.0.1"
   },
-  "main": "./lib/wide",
+  "main": "./wide",
   "scripts": {
     "test": "mocha"
   },

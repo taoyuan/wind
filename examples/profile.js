@@ -1,4 +1,4 @@
-var wide = require('../lib/wide');
+var wide = require('..');
 
 //
 // Start profile of 'test'
