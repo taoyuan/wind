@@ -1,4 +1,4 @@
-# wide [![Build Status](https://secure.travis-ci.org/taoyuan/wide.png?branch=master)](http://travis-ci.org/taoyuan/wide)
+# wide [![Build Status](https://secure.travis-ci.org/taoyuan/wide.png?branch=master)](http://travis-ci.org/taoyuan/wide) [![Greenkeeper badge](https://badges.greenkeeper.io/taoyuan/wide.svg)](https://greenkeeper.io/)
 
 A multi-transport async logging library for node.js. Forked from [winston](https://github.com/flatiron/winston)
 
